@@ -8,10 +8,7 @@
 import Foundation
 
 struct KittyImageData: Codable {
-    
     let url: String
-    
-
 }
 
 

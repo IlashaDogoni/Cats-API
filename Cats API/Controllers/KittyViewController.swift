@@ -8,15 +8,17 @@
 import UIKit
 
 class KittyViewController: UIViewController{
-
+    
     var kittyFactManager = KittyFactManager()
     var kittyImageManager = KittyImageManager()
+    
     @IBOutlet var kittyImage: UIImageView!
     @IBOutlet var kittyLabel: UILabel!
     
     override func viewDidLoad() {
         super.viewDidLoad()
         kittyFactManager.delegate = self
+        kittyImageManager.delegate = self
     }
     @IBAction func newFactPressed(_ sender: UIButton) {
         kittyFactManager.fetchKittyFact()
@@ -40,4 +42,30 @@ extension KittyViewController: KittyFactManagerDelegate{
     }
 }
 
+//MARK: - KittyImageManagerDelegate
+extension KittyViewController: KittyImageManagerDelegate{
+    func didUpdateImage(_ imageManager: KittyImageManager, neededImageUrl: URL)
+    {
+        DispatchQueue.main.async {
+            self.kittyImage.load(url: neededImageUrl)
+            print("noice")
+        }
+    }
+    func didImageFailedWithError(error: Error){
+        print(error)
+    }
+}
 
+extension UIImageView {
+    func load(url: URL) {
+        DispatchQueue.global().async { [weak self] in
+            if let data = try? Data(contentsOf: url) {
+                if let image = UIImage(data: data) {
+                    DispatchQueue.main.async {
+                        self?.image = image
+                    }
+                }
+            }
+        }
+    }
+}

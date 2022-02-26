@@ -8,7 +8,6 @@
 import Foundation
 
 protocol KittyFactManagerDelegate{
-    
     func didUpdateFact(_ factManager: KittyFactManager, fact: KittyFactModel)
     func didFailedWithError(error: Error)
 }
@@ -16,17 +15,15 @@ protocol KittyFactManagerDelegate{
 struct KittyFactManager {
     
     var delegate: KittyFactManagerDelegate?
+    
     func fetchKittyFact(){
         let kittyFactUrl = "https://catfact.ninja/fact"
         performRequest(with: kittyFactUrl)
     }
     
     func performRequest(with kittyFactUrl: String){
-        
         if let url = URL(string: kittyFactUrl){
-            
             let session = URLSession(configuration: .default)
-            
             let task = session.dataTask(with: url) { data, response, error in
                 if error != nil{
                     delegate?.didFailedWithError(error: error!)
@@ -45,7 +42,7 @@ struct KittyFactManager {
     func parseJSON(_ kittyFactData: Data) -> KittyFactModel? {
         let decoder = JSONDecoder()
         do{
-        let decodedData = try decoder.decode(KittyData.self, from: kittyFactData)
+            let decodedData = try decoder.decode(KittyData.self, from: kittyFactData)
             let gotFact = decodedData.fact
             let gotLength = decodedData.length
             print(gotLength)
@@ -56,9 +53,7 @@ struct KittyFactManager {
                 fetchKittyFact()
             }
             return nil
-           
         } catch {
-            
             return nil
         }
     }
