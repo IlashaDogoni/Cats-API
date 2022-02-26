@@ -10,6 +10,7 @@ import UIKit
 class KittyViewController: UIViewController{
 
     var kittyFactManager = KittyFactManager()
+    var kittyImageManager = KittyImageManager()
     @IBOutlet var kittyImage: UIImageView!
     @IBOutlet var kittyLabel: UILabel!
     
@@ -21,6 +22,9 @@ class KittyViewController: UIViewController{
         kittyFactManager.fetchKittyFact()
     }
     
+    @IBAction func newImagePressed(_ sender: UIButton) {
+        kittyImageManager.fetchKittyImage()
+    }
 }
 //MARK: - KittyFactManagerDelegate
 extension KittyViewController: KittyFactManagerDelegate{
